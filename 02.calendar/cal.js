@@ -1,36 +1,37 @@
 'use strict'
 
-/*
-[-] 最初の日付の曜日数を取得
-[-] 最後の日を取得
-[-] 月と年を表示
-[-] 曜日を表示
-[-] 余分な曜日数を字下げ
-[-] 最初の日から最後の日まで順番に表示
-[] クラス化
-*/
+class Calendar {
+  constructor (year, month) {
+    this.year = year
+    this.month = month
+  }
 
-const thisYear = new Date().getFullYear()
-const thisMonth = new Date().getMonth()
-let firstDayOfTheMonth = new Date(thisYear, thisMonth, 1).getDay()
-const lastDayOfTheMonth = new Date(thisYear, thisMonth + 1, 0).getDate()
-const top = `      ${thisMonth + 1}月 ${thisYear}`
-console.log(top)
-console.log('日 月 火 水 木 金 土')
-process.stdout.write('   '.repeat(firstDayOfTheMonth))
-for (let i = 1; i <= lastDayOfTheMonth; i++) {
-  if (firstDayOfTheMonth % 7 === 0 && firstDayOfTheMonth !== 0) {
-    if (i >= 10) {
-      process.stdout.write(`\n${i} `)
-    } else {
-      process.stdout.write(`\n ${i} `)
-    }
-  } else {
-    if (i >= 10) {
-      process.stdout.write(`${i} `)
-    } else {
-      process.stdout.write(` ${i} `)
+  _firstDayOfTheWeek () {
+    return new Date(this.year, this.month - 1, 1).getDay()
+  }
+
+  _lastDayOfTheMonth () {
+    return new Date(this.year, this.month, 0).getDate()
+  }
+
+  outputCalendar () {
+    console.log(`      ${this.month}月 ${this.year}`)
+    console.log('日 月 火 水 木 金 土')
+    let firstDayOfTheWeek = this._firstDayOfTheWeek()
+    process.stdout.write('   '.repeat(firstDayOfTheWeek))
+    for (let i = 1; i <= this._lastDayOfTheMonth(); i++) {
+      if (firstDayOfTheWeek % 7 === 0 && firstDayOfTheWeek !== 0) {
+        i >= 10 ? process.stdout.write(`\n${i} `) : process.stdout.write(`\n ${i} `)
+      } else {
+        i >= 10 ? process.stdout.write(`${i} `) : process.stdout.write(` ${i} `)
+      }
+      firstDayOfTheWeek += 1
     }
   }
-  firstDayOfTheMonth += 1
 }
+
+const params = require('minimist')(process.argv.slice(2))
+const year = params.y || new Date().getFullYear()
+const month = params.m || new Date().getMonth() + 1
+const calendar = new Calendar(year, month)
+calendar.outputCalendar()
