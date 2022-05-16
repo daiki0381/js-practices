@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "minimist": "^1.2.6"
+    "eslint": "^8.15.0",
+    "minimist": "^1.2.6",
+    "standard": "^17.0.0"
   }
 }
