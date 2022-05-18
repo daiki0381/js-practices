@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "enquirer": "^2.3.6",
     "eslint": "^8.15.0",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "uuid4": "^2.0.2"
   }
 }
