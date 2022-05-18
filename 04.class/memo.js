@@ -11,7 +11,7 @@ class Memo {
 
   static _list () {
     const files = fs.readdirSync('./data')
-    files.forEach((file) => {
+    files.forEach(file => {
       const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
       console.log(JSON.parse(jsonFormatMemo)[0])
     })
@@ -29,10 +29,10 @@ class Memo {
       choices: firstMemos,
       footer () {
         const memos = []
-        files.forEach((file) => {
+        files.forEach(file => {
           const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
           if (JSON.parse(jsonFormatMemo)[0] === firstMemos[this.index].name) {
-            JSON.parse(jsonFormatMemo).forEach((memo) => memos.push(memo))
+            JSON.parse(jsonFormatMemo).forEach(memo => memos.push(memo))
           }
         })
         return '\n' + memos.join('\n')
@@ -40,20 +40,20 @@ class Memo {
     })
     prompt
       .run()
-      .then((answer) => {
-        files.forEach((file) => {
+      .then(answer => {
+        files.forEach(file => {
           const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
           if (JSON.parse(jsonFormatMemo)[0] === answer) {
-            JSON.parse(jsonFormatMemo).forEach((memo) => console.log(memo))
+            JSON.parse(jsonFormatMemo).forEach(memo => console.log(memo))
           }
         })
       })
-      .catch((err) => console.error(err))
+      .catch(err => console.error(err))
   }
 
   static _remove () {
     const files = fs.readdirSync('./data')
-    const firstMemos = files.map((file) => {
+    const firstMemos = files.map(file => {
       const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
       return JSON.parse(jsonFormatMemo)[0]
     })
@@ -64,15 +64,15 @@ class Memo {
     })
     prompt
       .run()
-      .then((answer) => {
-        files.forEach((file) => {
+      .then(answer => {
+        files.forEach(file => {
           const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
           if (JSON.parse(jsonFormatMemo)[0] === answer) {
             fs.unlinkSync(`./data/${file}`)
           }
         })
       })
-      .catch((err) => console.error(err))
+      .catch(err => console.error(err))
   }
 
   static outputAdd () {
