@@ -14,16 +14,21 @@ class Calendar {
     return new Date(this.year, this.month, 0).getDate()
   }
 
+  _JudgmentOfSaturday (dayOfWeek) {
+    return new Date(this.year, this.month - 1, dayOfWeek).getDay() === 6
+  }
+
   output () {
     console.log(`      ${this.month}月 ${this.year}`)
     console.log('日 月 火 水 木 金 土')
     let firstDayOfTheWeek = this._firstDayOfTheWeek()
     process.stdout.write('   '.repeat(firstDayOfTheWeek))
     for (let i = 1; i <= this._lastDayOfTheMonth(); i++) {
-      if (firstDayOfTheWeek % 7 === 0 && firstDayOfTheWeek !== 0) {
-        i >= 10 ? process.stdout.write(`\n${i} `) : process.stdout.write(`\n ${i} `)
+      if (this._JudgmentOfSaturday(i)) {
+        process.stdout.write(`${i} `.padStart(3, ' '))
+        process.stdout.write('\n')
       } else {
-        i >= 10 ? process.stdout.write(`${i} `) : process.stdout.write(` ${i} `)
+        process.stdout.write(`${i} `.padStart(3, ' '))
       }
       firstDayOfTheWeek += 1
     }
