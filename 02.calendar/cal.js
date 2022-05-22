@@ -14,7 +14,7 @@ class Calendar {
     return new Date(this.year, this.month, 0).getDate()
   }
 
-  outputCalendar () {
+  output () {
     console.log(`      ${this.month}月 ${this.year}`)
     console.log('日 月 火 水 木 金 土')
     let firstDayOfTheWeek = this._firstDayOfTheWeek()
@@ -34,4 +34,4 @@ const params = require('minimist')(process.argv.slice(2))
 const year = params.y || new Date().getFullYear()
 const month = params.m || new Date().getMonth() + 1
 const calendar = new Calendar(year, month)
-calendar.outputCalendar()
+calendar.output()
