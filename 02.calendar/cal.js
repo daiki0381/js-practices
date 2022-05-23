@@ -24,12 +24,8 @@ class Calendar {
     let firstDayOfTheWeek = this._firstDayOfTheWeek()
     process.stdout.write('   '.repeat(firstDayOfTheWeek))
     for (let i = 1; i <= this._lastDayOfTheMonth(); i++) {
-      if (this._JudgmentOfSaturday(i)) {
-        process.stdout.write(`${i} `.padStart(3, ' '))
-        process.stdout.write('\n')
-      } else {
-        process.stdout.write(`${i} `.padStart(3, ' '))
-      }
+      process.stdout.write(`${i} `.padStart(3, ' '))
+      if (this._JudgmentOfSaturday(i)) { process.stdout.write('\n') }
       firstDayOfTheWeek += 1
     }
   }
