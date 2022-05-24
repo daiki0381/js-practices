@@ -4,7 +4,7 @@ const { Select } = require('enquirer')
 
 class Memo {
   static _add () {
-    const standardInput = require('fs').readFileSync('/dev/stdin', 'utf8').trim().split('\n')
+    const standardInput = fs.readFileSync('/dev/stdin', 'utf8').trim().split('\n')
     const id = uuid4()
     fs.writeFileSync(`./data/${id}.json`, JSON.stringify(standardInput))
   }
