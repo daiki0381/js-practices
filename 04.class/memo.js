@@ -37,18 +37,16 @@ class Memo {
         })
         return '\n' + memos.join('\n')
       }
-    })
-    prompt
-      .run()
-      .then(answer => {
-        files.forEach(file => {
-          const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
-          if (JSON.parse(jsonFormatMemo)[0] === answer) {
-            JSON.parse(jsonFormatMemo).forEach(memo => console.log(memo))
-          }
-        })
+    });
+    (async () => {
+      const answer = await prompt.run().catch(err => console.error(err))
+      files.forEach((file) => {
+        const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
+        if (JSON.parse(jsonFormatMemo)[0] === answer) {
+          JSON.parse(jsonFormatMemo).forEach((memo) => console.log(memo))
+        }
       })
-      .catch(err => console.error(err))
+    })()
   }
 
   static _remove () {
@@ -61,18 +59,16 @@ class Memo {
       name: 'memos',
       message: 'Choose a note you want to delete:',
       choices: firstMemos
-    })
-    prompt
-      .run()
-      .then(answer => {
-        files.forEach(file => {
-          const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
-          if (JSON.parse(jsonFormatMemo)[0] === answer) {
-            fs.unlinkSync(`./data/${file}`)
-          }
-        })
+    });
+    (async () => {
+      const answer = await prompt.run().catch(err => console.error(err))
+      files.forEach(file => {
+        const jsonFormatMemo = fs.readFileSync(`./data/${file}`)
+        if (JSON.parse(jsonFormatMemo)[0] === answer) {
+          fs.unlinkSync(`./data/${file}`)
+        }
       })
-      .catch(err => console.error(err))
+    })()
   }
 
   static outputAdd () {
