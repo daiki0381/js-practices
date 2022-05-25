@@ -4,22 +4,22 @@ const { Select } = require('enquirer')
 const SAVEDIR = './data'
 
 class Memo {
-  static _add () {
+  static #add () {
     const standardInput = fs.readFileSync('/dev/stdin', 'utf8').trim().split('\n')
     const id = uuid4()
     fs.writeFileSync(`${SAVEDIR}/${id}.json`, JSON.stringify(standardInput))
   }
 
-  static _list () {
-    const files = fs.readdirSync(`${SAVEDIR}`)
+  static #list () {
+    const files = fs.readdirSync(SAVEDIR)
     files.forEach(file => {
       const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
       console.log(JSON.parse(jsonFormatMemo)[0])
     })
   }
 
-  static _show () {
-    const files = fs.readdirSync(`${SAVEDIR}`)
+  static async #show () {
+    const files = fs.readdirSync(SAVEDIR)
     const firstMemos = files.map(file => {
       const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
       return JSON.parse(jsonFormatMemo)[0]
@@ -38,19 +38,17 @@ class Memo {
         })
         return '\n' + memos.join('\n')
       }
-    });
-    (async () => {
-      const answer = await prompt.run().catch(err => console.error(err))
-      files.forEach((file) => {
-        const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
-        if (JSON.parse(jsonFormatMemo)[0] === answer) {
-          JSON.parse(jsonFormatMemo).forEach((memo) => console.log(memo))
-        }
-      })
-    })()
+    })
+    const answer = await prompt.run().catch(err => console.error(err))
+    files.forEach(file => {
+      const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
+      if (JSON.parse(jsonFormatMemo)[0] === answer) {
+        JSON.parse(jsonFormatMemo).forEach(memo => console.log(memo))
+      }
+    })
   }
 
-  static _remove () {
+  static async #remove () {
     const files = fs.readdirSync(`${SAVEDIR}`)
     const firstMemos = files.map(file => {
       const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
@@ -60,53 +58,51 @@ class Memo {
       name: 'memos',
       message: 'Choose a note you want to delete:',
       choices: firstMemos
-    });
-    (async () => {
-      const answer = await prompt.run().catch(err => console.error(err))
-      files.forEach(file => {
-        const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
-        if (JSON.parse(jsonFormatMemo)[0] === answer) {
-          fs.unlinkSync(`${SAVEDIR}/${file}`)
-        }
-      })
-    })()
+    })
+    const answer = await prompt.run().catch(err => console.error(err))
+    files.forEach(file => {
+      const jsonFormatMemo = fs.readFileSync(`${SAVEDIR}/${file}`)
+      if (JSON.parse(jsonFormatMemo)[0] === answer) {
+        fs.unlinkSync(`${SAVEDIR}/${file}`)
+      }
+    })
   }
 
   static outputAdd () {
-    if (!fs.existsSync(`${SAVEDIR}`)) {
-      fs.mkdirSync(`${SAVEDIR}`)
+    if (!fs.existsSync(SAVEDIR)) {
+      fs.mkdirSync(SAVEDIR)
     } else {
-      Memo._add()
+      Memo.#add()
     }
   }
 
   static outputList () {
-    if (!fs.existsSync(`${SAVEDIR}`)) {
-      fs.mkdirSync(`${SAVEDIR}`)
-    } else if (!fs.readdirSync(`${SAVEDIR}`).length) {
+    if (!fs.existsSync(SAVEDIR)) {
+      fs.mkdirSync(SAVEDIR)
+    } else if (!fs.readdirSync(SAVEDIR).length) {
       ;
     } else {
-      Memo._list()
+      Memo.#list()
     }
   }
 
   static outputShow () {
-    if (!fs.existsSync(`${SAVEDIR}`)) {
-      fs.mkdirSync(`${SAVEDIR}`)
-    } else if (!fs.readdirSync(`${SAVEDIR}`).length) {
+    if (!fs.existsSync(SAVEDIR)) {
+      fs.mkdirSync(SAVEDIR)
+    } else if (!fs.readdirSync(SAVEDIR).length) {
       ;
     } else {
-      Memo._show()
+      Memo.#show()
     }
   }
 
   static outputRemove () {
-    if (!fs.existsSync(`${SAVEDIR}`)) {
-      fs.mkdirSync(`${SAVEDIR}`)
-    } else if (!fs.readdirSync(`${SAVEDIR}`).length) {
+    if (!fs.existsSync(SAVEDIR)) {
+      fs.mkdirSync(SAVEDIR)
+    } else if (!fs.readdirSync(SAVEDIR).length) {
       ;
     } else {
-      Memo._remove()
+      Memo.#remove()
     }
   }
 }
